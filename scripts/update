@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# Environment Flags
+set -o errexit  # Exit when a command fails
+set -o pipefail # Catch mysqldump fails
+set -o nounset  # Exit when using undeclared variables
+
+(
+  echo
+  set -x
+  git remote add anthropics https://github.com/anthropics/claude-code-action || true
+)
+
+(
+  echo
+  set -x
+  git fetch --recurse-submodules --tags --prune --multiple --jobs=8 anthropics
+)
+
+(
+  echo
+  set -x
+  git merge \
+    "$(
+      git ls-remote https://github.com/anthropics/claude-code-action refs/tags/beta^{} |
+        awk '{print $1}'
+    )"
+)
+
+(
+  echo
+  set -x
+  git remote remove anthropics
+)
