@@ -14,7 +14,7 @@ set -o nounset  # Exit when using undeclared variables
 (
   echo
   set -x
-  git fetch --recurse-submodules --tags --prune --multiple --jobs=8 anthropics
+  git fetch --recurse-submodules --no-tags --prune --multiple --jobs=8 anthropics
 )
 
 (
