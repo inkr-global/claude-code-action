@@ -301,7 +301,9 @@ export async function runClaude(promptPath: string, options: ClaudeOptions) {
       await writeFile("output.txt", output);
 
       // Process output.txt into JSON and save to execution file
-      const { stdout: jsonOutput } = await execAsync("jq -s '.' output.txt");
+      const { stdout: jsonOutput } = await execAsync("jq -s '.' output.txt", {
+        maxBuffer: 1024 * 1024 * 1024, // 1GB
+      });
       await writeFile(EXECUTION_FILE, jsonOutput);
 
       console.log(`Log saved to ${EXECUTION_FILE}`);
